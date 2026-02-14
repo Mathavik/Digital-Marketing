@@ -1,155 +1,161 @@
-import React from 'react';
-import { Search, Share2, Zap, FileText, Code } from 'lucide-react';
+import React, { useState, useRef } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Search, Megaphone, Target, BarChart, Globe } from 'lucide-react';
+import SEODetails from './servicepage/SEODetails';
+import SocialMediaDetails from './servicepage/SocialMediaDetails';
+import GoogleAdsDetails from './servicepage/GoogleAdsDetails';
+import ContentDetails from './servicepage/ContentDetails';
+import WebDetails from './servicepage/WebDetails';
+const Services = () => {
+  const [active, setActive] = useState(0);
+  const [selectedService, setSelectedService] = useState<number | null>(0);
+  const detailsRef = useRef<HTMLDivElement | null>(null);
 
-interface Service {
-  id: number;
-  icon: React.ReactNode;
-  title: string;
-  description: string;
-  features: string[];
-}
+  const handleSelect = (idx: number) => {
+    setSelectedService(idx);
+    // scroll to details after render
+    setTimeout(() => {
+      detailsRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }, 120);
+  };
 
-const Services: React.FC = () => {
-  const services: Service[] = [
+  const services = [
+    {
+      id: 0,
+      year: 'SEO',
+      title: 'SEO Optimization',
+      icon: <Search className="w-5 h-5" />,
+      image: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=2000&auto=format&fit=crop',
+      desc: 'Be where your customers are searching. We optimize for intent and ranking.',
+      tags: ['Technical SEO', 'Backlinks']
+    },
     {
       id: 1,
-      icon: <Search className="w-16 h-16 text-blue-600" />,
-      title: 'SEO Optimization',
-      description:
-        'Improve your website ranking on search engines and drive organic traffic that converts.',
-      features: [
-        'Keyword research & analysis',
-        'On-page optimization',
-        'Technical SEO',
-        'Link building',
-        'Monthly reporting',
-      ],
+      year: 'SOCIAL',
+      title: 'Social Media Marketing',
+      icon: <Megaphone className="w-5 h-5" />,
+      image: 'https://images.unsplash.com/photo-1611162616305-c69b3fa7fbe0?q=80&w=2000&auto=format&fit=crop',
+      desc: 'Building viral communities through creative content and engagement.',
+      tags: ['Reels', 'Community Mgmt']
     },
     {
       id: 2,
-      icon: <Share2 className="w-16 h-16 text-purple-600" />,
-      title: 'Social Media Marketing',
-      description:
-        'Build strong brand presence and engage your audience across social platforms.',
-      features: [
-        'Content strategy',
-        'Social media management',
-        'Community engagement',
-        'Influencer partnerships',
-        'Social analytics',
-      ],
+      year: 'ADS',
+      title: 'Google Ads',
+      icon: <Target className="w-5 h-5" />,
+      image: 'https://images.unsplash.com/photo-1533750349088-cd871a92f312?q=80&w=2000&auto=format&fit=crop',
+      desc: 'Paid campaigns that actually convert. Focus on ROI, not just clicks.',
+      tags: ['Google PPC', 'Meta Ads']
     },
     {
       id: 3,
-      icon: <Zap className="w-16 h-16 text-blue-600" />,
-      title: 'Google Ads',
-      description: 'Run targeted paid campaigns that generate high-quality leads and measurable ROI.',
-      features: [
-        'Campaign setup & management',
-        'Bid optimization',
-        'A/B testing',
-        'Conversion tracking',
-        'Performance reporting',
-      ],
+      year: 'CONTENT',
+      title: 'Content Marketing',
+      icon: <BarChart className="w-5 h-5" />,
+      image: 'https://images.unsplash.com/photo-1499750310107-5fef28a66643?q=80&w=2000&auto=format&fit=crop',
+      desc: 'High-impact content that tells your brand story and drives organic traffic.',
+      tags: ['Storytelling', 'Blogs']
     },
     {
       id: 4,
-      icon: <FileText className="w-16 h-16 text-purple-600" />,
-      title: 'Content Marketing',
-      description: 'Create strategic content that builds authority and attracts potential customers.',
-      features: [
-        'Content strategy',
-        'Blog writing',
-        'Video production',
-        'Infographics',
-        'Email campaigns',
-      ],
-    },
-    {
-      id: 5,
-      icon: <Code className="w-16 h-16 text-blue-600" />,
+      year: 'WEB',
       title: 'Website Development',
-      description: 'Design and develop high-performance, conversion-focused websites.',
-      features: [
-        'Responsive design',
-        'Custom development',
-        'Performance optimization',
-        'SEO-friendly structure',
-        'Ongoing support',
-      ],
-    },
+      icon: <Globe className="w-5 h-5" />,
+      image: 'https://images.unsplash.com/photo-1498050108023-c5249f4df085?q=80&w=2000&auto=format&fit=crop',
+      desc: 'High-speed conversion websites built for the global market.',
+      tags: ['UI/UX', 'Fullstack']
+    }
   ];
 
   return (
-    <main className="pt-8">
-      {/* Page Header */}
-      <section className="bg-gradient-to-r from-blue-600 to-purple-600 text-white py-16">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h1 className="text-4xl md:text-5xl font-bold mb-4">Our Services</h1>
-          <p className="text-xl text-blue-100 max-w-2xl">
-            Comprehensive digital marketing solutions designed to accelerate your business growth
-          </p>
-        </div>
-      </section>
-
-      {/* Services Grid */}
-      <section className="py-20 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
-            {services.map((service) => (
-              <div
-                key={service.id}
-                className="rounded-xl shadow-lg p-8 hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 bg-white border border-gray-100"
-              >
-                {/* Icon */}
-                <div className="mb-6 p-4 rounded-lg bg-gradient-to-br from-blue-50 to-purple-50 w-fit">
-                  {service.icon}
-                </div>
-
-                {/* Title */}
-                <h3 className="text-3xl font-bold text-gray-900 mb-4">{service.title}</h3>
-
-                {/* Description */}
-                <p className="text-gray-600 mb-6 leading-relaxed text-lg">{service.description}</p>
-
-                {/* Features */}
-                <div className="space-y-3 mb-8">
-                  <h4 className="font-semibold text-gray-900 text-sm uppercase tracking-wide">
-                    What's Included:
-                  </h4>
-                  <ul className="space-y-2">
-                    {service.features.map((feature, index) => (
-                      <li key={index} className="flex items-center gap-3 text-gray-700">
-                        <div className="w-2 h-2 rounded-full bg-gradient-to-r from-blue-600 to-purple-600"></div>
-                        {feature}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-
-                {/* CTA Button */}
-                <button className="w-full px-6 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white font-semibold rounded-lg hover:shadow-lg transition-all duration-300 hover:scale-105">
-                  Get Started
-                </button>
-              </div>
-            ))}
+    <div className="w-full">
+      {/* --- Main Interactive Service Section --- */}
+      <section className="bg-white py-12 px-6 overflow-hidden">
+        <div className="max-w-7xl mx-auto">
+          <div className="flex justify-between items-end mb-8 border-b border-gray-100 pb-6">
+            <div>
+              <h2 className="text-4xl font-black text-slate-900 tracking-tighter uppercase italic">
+                Our <span className="text-blue-600">Impact</span>
+              </h2>
+              <p className="text-gray-400 text-xs font-bold tracking-[0.3em] uppercase mt-2">
+                Growth Strategies Since 2015
+              </p>
+            </div>
+            <div className="flex gap-1 items-center">
+              <span className="text-[10px] font-bold text-gray-400 uppercase mr-2">Interactive</span>
+              {[0, 1, 2].map((i) => (
+                <div key={i} className={`h-1 w-3 rounded-full ${i === 1 ? 'bg-blue-600' : 'bg-gray-200'}`} />
+              ))}
+            </div>
           </div>
 
-          {/* Additional Info Section */}
-          <div className="mt-20 bg-gradient-to-r from-blue-50 to-purple-50 rounded-xl p-12 text-center">
-            <h2 className="text-3xl font-bold text-gray-900 mb-4">Need a Custom Solution?</h2>
-            <p className="text-gray-700 text-lg mb-8 max-w-2xl mx-auto leading-relaxed">
-              Every business is unique. We can create a tailored package combining our services to
-              meet your specific goals and budget.
-            </p>
-            <button className="px-8 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white font-semibold rounded-lg hover:shadow-lg transition-all duration-300 hover:scale-105 inline-block">
-              Contact Our Team
-            </button>
+          <div className="flex flex-col lg:flex-row gap-3 h-[500px] w-full items-stretch">
+            {services.map((s, index) => {
+              const isActive = active === index;
+              return (
+                <motion.div
+                  key={s.id}
+                  onMouseEnter={() => setActive(index)}
+                  onClick={() => handleSelect(index)}
+                  animate={{flex: isActive ? 4 : 1 }}
+                  transition={{ duration: 0.6, ease: [0.25, 1, 0.5, 1] }}
+                  className="relative overflow-hidden rounded-[2rem] cursor-pointer group shadow-lg"
+                >
+                  <img src={s.image} alt={s.title} className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
+                  <div className={`absolute inset-0 bg-black/50 transition-opacity ${isActive ? 'opacity-70' : 'opacity-40'}`} />
+
+                  {!isActive && (
+                    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                      <span className="rotate-90 text-white/50 font-black text-3xl uppercase whitespace-nowrap tracking-tighter">{s.year}</span>
+                    </motion.div>
+                  )}
+
+                  <div className="absolute inset-0 p-6 flex flex-col justify-between">
+                    <div className="flex justify-between items-start">
+                      <div className="p-3 bg-white/10 backdrop-blur-lg rounded-xl border border-white/20 text-white">{s.icon}</div>
+                      {isActive && (
+                        <motion.span initial={{ x: 20, opacity: 0 }} animate={{ x: 0, opacity: 1 }} className="bg-blue-600 text-white px-3 py-1 rounded-lg font-bold text-[10px] tracking-widest uppercase">
+                          {s.year}
+                        </motion.span>
+                      )}
+                    </div>
+
+                    <div className="overflow-hidden">
+                      <AnimatePresence>
+                        {isActive && (
+                          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}>
+                            <h3 className="text-2xl md:text-3xl font-black text-white uppercase mb-2 leading-none">{s.title}</h3>
+                            <p className="text-white/70 text-sm mb-4 max-w-xs font-medium">{s.desc}</p>
+                            <div className="flex gap-2">
+                              {s.tags.map(t => (
+                                <span key={t} className="text-[9px] border border-white/30 text-white/90 px-2 py-1 rounded-md uppercase font-bold backdrop-blur-sm">{t}</span>
+                              ))}
+                            </div>
+                          </motion.div>
+                        )}
+                      </AnimatePresence>
+                    </div>
+                  </div>
+                </motion.div>
+              );
+            })}
           </div>
         </div>
       </section>
-    </main>
+      
+    
+       {/* DETAILS SECTION START */}
+      <div ref={detailsRef}>
+        {selectedService === 0 && <SEODetails />}
+        {selectedService === 1 && <SocialMediaDetails />}
+         {selectedService === 2 && <GoogleAdsDetails />}
+        {selectedService === 3 && <ContentDetails />}
+        {selectedService === 4 && <WebDetails />} 
+      </div>
+      {/* DETAILS SECTION END */}
+
+    </div>
+    // </div>
   );
 };
-
 export default Services;
